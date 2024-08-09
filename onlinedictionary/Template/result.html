@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+    <title>Online Dictionary | Result</title>
+     <style>
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #ff6347;
+    color: white;
+    padding: 20px;
+    font-size: 2em;
+}
+.container {
+    padding: 20px;
+}
+.search-box {
+    margin: 20px 0;
+}
+.search-box input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 1.2em;
+    border: 2px solid #ff6347;
+    border-radius: 5px;
+}
+.search-box .btn {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #ff6347;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.result {
+    background-color: #ffe4b5;
+    border: 2px solid #ff6347;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 70%;
+    text-align: left;
+}
+.result h2 {
+    color: #ff6347;
+}
+.result p {
+    font-size: 1.2em;
+}
+.result ul {
+    list-style-type: none;
+    padding: 0;
+}
+.result ul li {
+    background-color: #f0f8ff;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+}
+.definitions {
+    margin: 50px 0px;
+}
+     </style>
+</head>
+<body>
+    <header>
+        Online Dictionary
+    </header>
+    <div class="container">
+        <div class="search-box">
+            <form action="{% url 'result' %}" method="get">
+                <input type="text" name="search" placeholder="Enter word..."maxlength= "30" required>
+                <button class="btn">Search</button>
+            </form>
+        </div>
+        </div>
+        <div class="result" id="result">
+            <h2>Word: <span id="word-result">{{word}}</span></h2>
+            
+        {% if meanings %}
+            <p><strong>Phonetic:</strong> <span id="phonetic">{{pronounciation}}</span></p>
+            <div><audio src="{{audio}}" controls></audio></div>
+
+            {% for meaning in meanings %}
+            <div class="definitions">
+                <p><strong>Part of speech:</strong> {{meaning.partOfSpeech}}</p>
+
+                {% for this in meaning.definitions %}
+                <p><strong>Definition:</strong> <span id="definition">{{this.definition}}</span></p>
+                <p><strong>Synonyms:</strong></p>
+                <ul id="synonyms">
+                    <li>{{this.synonyms}}</li>
+                </ul>
+                <p><strong>Antonyms:</strong></p>
+                <ul id="antonyms">
+                    <li>{{this.antonyms}}</li>
+                </ul>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div>
+                No Definitions Found
+            </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>
